@@ -2,7 +2,7 @@
 
 This repository contains all the code that was used during my time at the European Sout Observatory Headquarters in Garching, Munich. All code is written in Python but is meant to be run through CASA (the Common Astronomy Software Application). It concerns imaging and baselining data from the Atacama Large Millimeter Array (ALMA). There are two main branches, one containing code for the Spiderweb galaxy (z = 2.163), project under the guidance of Carlos De bBreuk and Paola Andreani, and the other for the SPT galaxy Cluster (z=4.3), for Allison Man's project on large redshift clusters. 
 
-## Spiderweb - 
+## Spiderweb - 2021.1.00067.S
 
 The spiderweb galaxy is located at z = 2.163. Our observations were taken at band four, and therefore we seek lines for Carbon Monoxide (CO(4->3)) and Atomic Carbon (CI(1->0)) which are at this frequency inside the band. This set consists of:
 
@@ -13,9 +13,9 @@ The spiderweb galaxy is located at z = 2.163. Our observations were taken at ban
 
 
 
-## SPT Cluster - 
+## SPT Cluster - 2021.2.00019.S 
 
-The SPT Cluster is found at z=4.3. We are searching for the line of CI(1->0) which is redshifted to 92 GHz. Our observations are in Band 3 of ALMA. Unlike Spiderweb, this cluster is separated into a northern and souther region, and so our data have 2 fields which we can examine. This set consists of:
+The SPT Cluster is found at z=4.3, alongside DRC who is the other cluster the project examines. We are searching for the line of CI(1->0) which is redshifted to 92 GHz. Our observations are in Band 3 of ALMA. Unlike Spiderweb, this cluster is separated into a northern and souther region, and so our data have 2 fields which we can examine. This set consists of:
 
 * Computation of imaging Parameters for the Southern Region - using .ms files produced by scriptforpy
 * Computation of imaging Parameters for the Southern Region - using .ms files produced manually with importasdm
