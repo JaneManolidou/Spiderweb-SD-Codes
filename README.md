@@ -8,8 +8,11 @@ The spiderweb galaxy is located at z = 2.163. Our observations were taken at ban
 
 * Computation of imaging Parameters - using .ms files produced by scriptforpy
 * Computation of imaging Parameters - using .ms files produced manually with importasdm
+* sdbaseline
 * sdimaging for the parameters of the first code
 * sdimaging for the parameters of the second code
+* imcontsub for the first code
+* imcontsub for the second code
 
 
 
