@@ -80,7 +80,7 @@ outCellsCO = []
 outCellsCI = []
 outImCO = []
 outImCI = []
-pathex = '/scratch/home/emanolid/data/Spiderweb/Data/science_goal.uid___A001_X2d20_X3bd9/group.uid___A001_X2d20_X3bda/member.uid___A001_X2d20_X3bdd/calibrated/excluded-data/Auto '
+pathex = '/scratch/home/emanolid/data/Spiderweb/Data/science_goal.uid___A001_X2d20_X3bd9/group.uid___A001_X2d20_X3bda/member.uid___A001_X2d20_X3bdd/calibrated/excluded-data/Auto/'
 
 #redefining the parameters
 
