@@ -74,6 +74,8 @@ names=[
 #Storing what we excluded for good measure
 outnamesCO = []
 outnamesCI = []
+outmsCO = []
+outmsCI = []
 outCellsCO = []
 outCellsCI = []
 outImCO = []
@@ -106,6 +108,7 @@ while j < len(CellsCO): #all are the same length cause we have the same number o
 	#The problem is usually found in imsize because it is a result of a computation using maxsize
 	if j < a-1: 
 		if ImsizeCO[j+1] > ImsizeCO[j]+20 or  ImsizeCO[j+1] < ImsizeCO[j]-20:
+			outmsCO.append(MeasSetsCO[j+1])
 			outnamesCO.append(namesCO[j+1])
 			outCellsCO.append(CellsCO[j+1])
 			outImCO.append(ImsizeCO[j+1])
@@ -126,6 +129,7 @@ while j < len(CellsCI):
 		break
 	if j < a-1:
 		if ImsizeCI[j+1] > ImsizeCI[j]+20 or  ImsizeCI[j+1] < ImsizeCI[j]-20:
+			outmsCI.append(MeasSetsCI[j+1])
 			outnamesCI.append(namesCI[j+1])
 			outCellsCI.append(CellsCI[j+1])
 			outImCI.append(ImsizeCI[j+1])
@@ -198,10 +202,11 @@ sdimaging(infiles=MeasSets,outfile=pathCal+'collectedsdimaging_CI_unfiltered.png
 
 #Imaging Excluded Data by themselves:
 i = 0
-for file in outnamesCO:
+for file in outmsCO:
 	a = outImCO[i]
 	b =round(outCellsCO[i],3)
 	c = str(b)+'arcsec'
+	
 	
 	print(file)
 	outCO = pathex + outnamesCO[i]+'_ex_CO'+'.png'
@@ -210,7 +215,7 @@ for file in outnamesCO:
 	
 	
 i = 0
-for file in outnamesCI:
+for file in outmsCI:
 	a = outImCI[i]
 	b =round(outCellsCI[i],3)
 	c = str(b)+'arcsec'
