@@ -1,3 +1,3 @@
 #Standard file to create the folder
 
-the command to createms files from asdm.sdm is importasdm(asdm='path/to/asdm.sdm/file',vis = 'path/to/new/.ms/file')
+the command to create ms files from asdm.sdm is importasdm(asdm='path/to/asdm.sdm/file',vis = 'path/to/new/.ms/file')
