@@ -100,6 +100,11 @@ MeasSetsCO = MeasSets
 namesCO = names
 MeasSetsCI = MeasSets
 namesCI= names
+CellsCOR = CellsCO
+CellsCIR = CellsCI
+ImsizeCOR = ImsizeCO
+ImsizeCIR = ImsizeCI
+l=0
 j = 0
 a = len(CellsCO)
 while j < len(CellsCO): #all are the same length cause we have the same number of files:
@@ -108,20 +113,20 @@ while j < len(CellsCO): #all are the same length cause we have the same number o
 	#The problem is usually found in imsize because it is a result of a computation using maxsize
 	if j < a-1: 
 		if ImsizeCO[j+1] > ImsizeCO[j]+20 or  ImsizeCO[j+1] < ImsizeCO[j]-20:
-			outmsCO.append(MeasSetsCO[j+1])
-			outnamesCO.append(namesCO[j+1])
-			outCellsCO.append(CellsCO[j+1])
-			outImCO.append(ImsizeCO[j+1])
-			ImsizeCO.pop(j+1)
-			CellsCO.pop(j+1)
+			outmsCO.append(MeasSets[l+1])
+			outnamesCO.append(names[l+1])
+			outCellsCO.append(CellsCO[l+1])
+			outImCO.append(ImsizeCO[l+1])
+			ImsizeCOR.pop(j+1)
+			CellsCOR.pop(j+1)
 			MeasSetsCO.pop(j+1)
 			namesCO.pop(j+1)
 			a = a - 1
+			l=l+1
 			continue
-	cellsumCO = cellsumCO + CellsCO[j]
-	imsumCO = imsumCO + ImsizeCO[j]
+	l=l+1
 	j = j+1
-	
+l=0
 j = 0
 a = len(CellsCI)
 while j < len(CellsCI):
@@ -129,18 +134,18 @@ while j < len(CellsCI):
 		break
 	if j < a-1:
 		if ImsizeCI[j+1] > ImsizeCI[j]+20 or  ImsizeCI[j+1] < ImsizeCI[j]-20:
-			outmsCI.append(MeasSetsCI[j+1])
-			outnamesCI.append(namesCI[j+1])
-			outCellsCI.append(CellsCI[j+1])
-			outImCI.append(ImsizeCI[j+1])
-			ImsizeCI.pop(j+1)
-			CellsCI.pop(j+1)
+			outmsCI.append(MeasSets[l+1])
+			outnamesCI.append(names[l+1])
+			outCellsCI.append(CellsCI[l+1])
+			outImCI.append(ImsizeCI[l+1])
+			ImsizeCIR.pop(j+1)
+			CellsCIR.pop(j+1)
 			MeasSetsCI.pop(j+1)
 			namesCI.pop(j+1)
 			a = a -1
+			l=l+1
 			continue
-	imsumCI = imsumCI + ImsizeCI[j]
-	cellsumCI = cellsumCI + CellsCI[j]
+	l=l+1
 	j = j+1
 	
 
@@ -152,21 +157,21 @@ impath='/scratch/home/emanolid/data/Spiderweb/Data/science_goal.uid___A001_X2d20
 #First we will image each one separately
 for file in MeasSetsCO:
 	#CO	
-	a = ImsizeCO[i]
-	b =round(CellsCO[i],3)
+	a = ImsizeCOR[i]
+	b =round(CellsCOR[i],3)
 	c = str(b)+'arcsec'
 	cellsumCO =cellsumCO + b
 	imsumCO = imsumCO + a
 	print(file)
-	outCO = impath+names[i]+'_CO'+'.png'
+	outCO = impath+namesCO[i]+'_CO'+'.png'
 	
 	sdimaging(infiles=[file],outfile=outCO, overwrite=True, spw=spwCO, gridfunction='SF',convsupport=6,imsize=[a,a],cell=[c,c], stokes='I',veltype='radio',outframe='lsrk')
 i = 0	
 for file in MeasSetsCI:	
 	#now for the CI line
-	a = ImsizeCI[i]
-	outCI = impath+names[i]+'_CI'+'.png'
-	b =round(CellsCI[i],3)
+	a = ImsizeCIR[i]
+	outCI = impath+namesCI[i]+'_CI'+'.png'
+	b =round(CellsCIR[i],3)
 	c = str(b)+'arcsec'
 	cellsumCI =cellsumCI + b
 	imsumCI = imsumCI + a
@@ -177,9 +182,9 @@ for file in MeasSetsCI:
 
 #First for CO:
 print("CO")
-Cellcalc = cellsumCO/len(CellsCO)
+Cellcalc = cellsumCO/len(CellsCOR)
 cell = str(Cellcalc)+'arcsec'
-Im = int(imsumCO/len(ImsizeCO))
+Im = int(imsumCO/len(ImsizeCOR))
 print(cell)
 print(im)
 
@@ -190,9 +195,9 @@ sdimaging(infiles=MeasSets,outfile=pathCal+'collectedsdimaging_CO_unfiltered.png
 #Then for CI:
 
 print("CI")
-Cellcalc = cellsumCO/len(CellsCI)
+Cellcalc = cellsumCO/len(CellsCIR)
 cell = str(Cellcalc)+'arcsec'
-Im = int(imsumCO/len(ImsizeCI))
+Im = int(imsumCO/len(ImsizeCIR))
 print(cell)
 print(Im)
 
