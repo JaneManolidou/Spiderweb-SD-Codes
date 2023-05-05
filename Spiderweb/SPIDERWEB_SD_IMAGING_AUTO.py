@@ -96,14 +96,23 @@ cellsumCO = 0
 imsumCO = 0 
 cellsumCI = 0
 imsumCI = 0 
-MeasSetsCO = MeasSets
-namesCO = names
-MeasSetsCI = MeasSets
-namesCI= names
-CellsCOR = CellsCO
-CellsCIR = CellsCI
-ImsizeCOR = ImsizeCO
-ImsizeCIR = ImsizeCI
+MeasSetsCO = []
+namesCO = []
+MeasSetsCI = []
+namesCI= []
+CellsCOR = []
+CellsCIR = []
+ImsizeCOR = []
+ImsizeCIR = []
+for i in range(0,len(CellsCO)): #all are the same length initially
+	CellsCOR.append(CellsCO[i])
+	CellsCIR.append(CellsCI[i])
+	ImsizeCOR.append(ImsizeCO[i])
+	ImsizeCIR.append(ImsizeCI[i])
+	MeasSetsCO.append( MeasSets[i])
+	namesCO.append( names[i])
+	MeasSetsCI.append(MeasSets[i])
+	namesCI.append(names[i])
 l=0
 j = 0
 a = len(CellsCO)
@@ -112,7 +121,7 @@ while j < len(CellsCO): #all are the same length cause we have the same number o
 		break
 	#The problem is usually found in imsize because it is a result of a computation using maxsize
 	if j < a-1: 
-		if ImsizeCO[j+1] > ImsizeCO[j]+20 or  ImsizeCO[j+1] < ImsizeCO[j]-20:
+		if ImsizeCOR[j+1] > ImsizeCOR[j]+20 or  ImsizeCOR[j+1] < ImsizeCOR[j]-20:
 			outmsCO.append(MeasSets[l+1])
 			outnamesCO.append(names[l+1])
 			outCellsCO.append(CellsCO[l+1])
@@ -126,6 +135,10 @@ while j < len(CellsCO): #all are the same length cause we have the same number o
 			continue
 	l=l+1
 	j = j+1
+	
+print(ImsizeCO)
+print(ImsizeCOR)
+
 l=0
 j = 0
 a = len(CellsCI)
@@ -133,7 +146,7 @@ while j < len(CellsCI):
 	if j>=a:
 		break
 	if j < a-1:
-		if ImsizeCI[j+1] > ImsizeCI[j]+20 or  ImsizeCI[j+1] < ImsizeCI[j]-20:
+		if ImsizeCIR[j+1] > ImsizeCIR[j]+20 or  ImsizeCIR[j+1] < ImsizeCIR[j]-20:
 			outmsCI.append(MeasSets[l+1])
 			outnamesCI.append(names[l+1])
 			outCellsCI.append(CellsCI[l+1])
@@ -148,12 +161,15 @@ while j < len(CellsCI):
 	l=l+1
 	j = j+1
 	
+print(ImsizeCI)
+print(ImsizeCIR)
 
 
 
 #we will be storing the troubleshooting images in a separate directory
 impath='/scratch/home/emanolid/data/Spiderweb/Data/science_goal.uid___A001_X2d20_X3bd9/group.uid___A001_X2d20_X3bda/member.uid___A001_X2d20_X3bdd/calibrated/troubleshooting_images/Auto/'
-
+i = 0
+print('CO')
 #First we will image each one separately
 for file in MeasSetsCO:
 	#CO	
@@ -163,10 +179,12 @@ for file in MeasSetsCO:
 	cellsumCO =cellsumCO + b
 	imsumCO = imsumCO + a
 	print(file)
+	print(a, ' and' , c)
 	outCO = impath+namesCO[i]+'_CO'+'.png'
-	
+	i = i+1
 	sdimaging(infiles=[file],outfile=outCO, overwrite=True, spw=spwCO, gridfunction='SF',convsupport=6,imsize=[a,a],cell=[c,c], stokes='I',veltype='radio',outframe='lsrk')
 i = 0	
+print('CI')
 for file in MeasSetsCI:	
 	#now for the CI line
 	a = ImsizeCIR[i]
@@ -175,6 +193,7 @@ for file in MeasSetsCI:
 	c = str(b)+'arcsec'
 	cellsumCI =cellsumCI + b
 	imsumCI = imsumCI + a
+	print(a, ' and' , c)
 	sdimaging(infiles=[file],outfile=outCI, overwrite=True, spw=spwCI, gridfunction='SF',convsupport=6,imsize=[a,a],cell=[c,c], stokes='I',veltype='radio',outframe='lsrk')
 	i = i+1
 
@@ -211,7 +230,7 @@ for file in outmsCO:
 	a = outImCO[i]
 	b =round(outCellsCO[i],3)
 	c = str(b)+'arcsec'
-	
+	i = i+ 1
 	
 	print(file)
 	outCO = pathex + outnamesCO[i]+'_ex_CO'+'.png'
@@ -224,7 +243,7 @@ for file in outmsCI:
 	a = outImCI[i]
 	b =round(outCellsCI[i],3)
 	c = str(b)+'arcsec'
-	
+	i = i+1
 	print(file)
 	outCI = pathex + outnamesCI[i]+'_ex_CI'+'.png'
 	
