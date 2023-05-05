@@ -163,7 +163,7 @@ for file in MeasSetsCI:
 print("CO")
 Cellcalc = cellsumCO/len(CellsCO)
 cell = str(Cellcalc)+'arcsec'
-Im = imsumCO/len(ImsizeCO)	
+Im = int(imsumCO/len(ImsizeCO))	
 print(cell)
 print(im)
 
@@ -174,7 +174,7 @@ sdimaging(infiles=MeasSets,outfile=pathCal+'collectedsdimaging_CO.png', overwrit
 print("CI")
 Cellcalc = cellsumCO/len(CellsCI)
 cell = str(Cellcalc)+'arcsec'
-Im = imsumCO/len(ImsizeCI)
+Im = int(imsumCO/len(ImsizeCI))
 print(cell)
 print(Im)
 
