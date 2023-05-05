@@ -71,7 +71,14 @@ names=[
 	'uid___A002_X1036d05_X33a5',
 	'uid___A002_X1036d05_Xb88f'
 	]
-
+#Storing what we excluded for good measure
+outnamesCO = []
+outnamesCI = []
+outCellsCO = []
+outCellsCI = []
+outImCO = []
+outImCI = []
+pathex = '/scratch/home/emanolid/data/Spiderweb/Data/science_goal.uid___A001_X2d20_X3bd9/group.uid___A001_X2d20_X3bda/member.uid___A001_X2d20_X3bdd/calibrated/excluded-data/Auto '
 
 #redefining the parameters
 
@@ -99,7 +106,9 @@ while j < len(CellsCO): #all are the same length cause we have the same number o
 	#The problem is usually found in imsize because it is a result of a computation using maxsize
 	if j < a-1: 
 		if ImsizeCO[j+1] > ImsizeCO[j]+20 or  ImsizeCO[j+1] < ImsizeCO[j]-20:
-		
+			outnamesCO.append(namesCO[j+1])
+			outCellsCO.append(CellsCO[j+1])
+			outImCO.append(ImsizeCO[j+1])
 			ImsizeCO.pop(j+1)
 			CellsCO.pop(j+1)
 			MeasSetsCO.pop(j+1)
@@ -117,6 +126,9 @@ while j < len(CellsCI):
 		break
 	if j < a-1:
 		if ImsizeCI[j+1] > ImsizeCI[j]+20 or  ImsizeCI[j+1] < ImsizeCI[j]-20:
+			outnamesCI.append(namesCI[j+1])
+			outCellsCI.append(CellsCI[j+1])
+			outImCI.append(ImsizeCI[j+1])
 			ImsizeCI.pop(j+1)
 			CellsCI.pop(j+1)
 			MeasSetsCI.pop(j+1)
@@ -163,11 +175,13 @@ for file in MeasSetsCI:
 print("CO")
 Cellcalc = cellsumCO/len(CellsCO)
 cell = str(Cellcalc)+'arcsec'
-Im = int(imsumCO/len(ImsizeCO))	
+Im = int(imsumCO/len(ImsizeCO))
 print(cell)
 print(im)
 
-sdimaging(infiles=MeasSets,outfile=pathCal+'collectedsdimaging_CO.png', overwrite=True, spw=spwCO,  gridfunction='SF',convsupport=6,imsize=[Im,Im],cell=[cell,cell],stokes='I',veltype='radio',outframe='lsrk')
+sdimaging(infiles=MeasSetsCO,outfile=pathCal+'collectedsdimaging_CO.png', overwrite=True, spw=spwCO,  gridfunction='SF',convsupport=6,imsize=[Im,Im],cell=[cell,cell],stokes='I',veltype='radio',outframe='lsrk')
+#Including the excluded ones (with the median value we got for the ones we kept):
+sdimaging(infiles=MeasSets,outfile=pathCal+'collectedsdimaging_CO_unfiltered.png', overwrite=True, spw=spwCO,  gridfunction='SF',convsupport=6,imsize=[Im,Im],cell=[cell,cell],stokes='I',veltype='radio',outframe='lsrk')
 
 #Then for CI:
 
@@ -178,5 +192,30 @@ Im = int(imsumCO/len(ImsizeCI))
 print(cell)
 print(Im)
 
-sdimaging(infiles=MeasSets,outfile=pathCal+'collectedsdimaging_CI.png', overwrite=True, spw=spwCI,  gridfunction='SF',convsupport=6,imsize=[Im,Im],cell=[cell,cell],stokes='I',veltype='radio',outframe='lsrk')
+sdimaging(infiles=MeasSetsCI,outfile=pathCal+'collectedsdimaging_CI.png', overwrite=True, spw=spwCI,  gridfunction='SF',convsupport=6,imsize=[Im,Im],cell=[cell,cell],stokes='I',veltype='radio',outframe='lsrk')
+#Including the excluded ones (with the median value we got for the ones we kept):
+sdimaging(infiles=MeasSets,outfile=pathCal+'collectedsdimaging_CI_unfiltered.png', overwrite=True, spw=spwCI,  gridfunction='SF',convsupport=6,imsize=[Im,Im],cell=[cell,cell],stokes='I',veltype='radio',outframe='lsrk')
 
+#Imaging Excluded Data by themselves:
+i = 0
+for file in outnamesCO:
+	a = outImCO[i]
+	b =round(outCellsCO[i],3)
+	c = str(b)+'arcsec'
+	
+	print(file)
+	outCO = pathex + outnamesCO[i]+'_ex_CO'+'.png'
+	
+	sdimaging(infiles=[file],outfile=outCO, overwrite=True, spw=spwCO, gridfunction='SF',convsupport=6,imsize=[a,a],cell=[c,c], stokes='I',veltype='radio',outframe='lsrk')
+	
+	
+i = 0
+for file in outnamesCI:
+	a = outImCI[i]
+	b =round(outCellsCI[i],3)
+	c = str(b)+'arcsec'
+	
+	print(file)
+	outCI = pathex + outnamesCI[i]+'_ex_CI'+'.png'
+	
+	sdimaging(infiles=[file],outfile=outCI, overwrite=True, spw=spwCI, gridfunction='SF',convsupport=6,imsize=[a,a],cell=[c,c], stokes='I',veltype='radio',outframe='lsrk')
