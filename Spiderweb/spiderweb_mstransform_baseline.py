@@ -1,8 +1,11 @@
+#This python script will combine spectral windows for CO and CI and give out two new files, one for each. Then it will baseline them and store them in a directory.
 
 #path to thecalibrated measurement sets
-pathCal = '/scratch/home/emanolid/data/Spiderweb/Data/science_goal.uid___A001_X2d20_X3bd9/group.uid___A001_X2d20_X3bda/member.uid___A001_X2d20_X3bdd/calibrated/'
+pathCal = '/scratch/home/emanolid/data/Spiderweb/Data/science_goal.uid___A001_X2d20_X3bd9/group.uid___A001_X2d20_X3bda/member.uid___A001_X2d20_X3bdd/calibrated_old/'
 
-#this time our list must contain calibrated measurements sets
+
+#old measurement sets:
+
 MeasSetsCO=[
 	pathCal+'uid___A002_X101c3b2_X42b1.ms.split.cal',
 	pathCal+'uid___A002_X101e5ab_Xf704.ms.split.cal',
@@ -35,6 +38,7 @@ MeasSetsCO=[
 MeasSetsCI = []
 for file in MeasSetsCO:
 	MeasSetsCI.append(file)
+#blank names:
 
 names=[
 	'uid___A002_X101c3b2_X42b1',
@@ -64,75 +68,31 @@ names=[
 	'uid___A002_X1036d05_X33a5',
 	'uid___A002_X1036d05_Xb88f'
 	]
-	
 
-#redefining the parameters
-
-diameter=12
-#spw must be strings for these CASA commands
-spwCO='19'
-spwCI = '21'
-#iteration variable
-i = 0
-
-
-
-#All
-i=0
-for file in MeasSetsCO:
-	sdbaseline(infile=file, datacolumn='data',  spw = '' , blfunc = 'poly', order = 1, overwrite = True, outfile = pathCal+'baselines/'+names[i]+'.bl',clipniter = 100, maskmode = 'auto',  thresh= 5,avg_limit = 0 ,minwidth= 4 ,edge=0')
-	i = i+1
-
-
-#Both together (to be safe):
-i=0
-for file in MeasSetsCO:
-	sdbaseline(infile=file, datacolumn='data',  spw = '19,21' , blfunc = 'poly', order = 1, overwrite = True, outfile = pathCal+'baselines/'+names[i]+'_ALL.bl',clipniter = 100, maskmode = 'auto',  thresh= 5 ,avg_limit = 0 ,minwidth= 4 ,edge=0)
-	i = i+1
-
-
+#path to new measurement sets:
+#path to thecalibrated measurement sets
+pathnew = '/scratch/home/emanolid/data/Spiderweb/Data/science_goal.uid___A001_X2d20_X3bd9/group.uid___A001_X2d20_X3bda/member.uid___A001_X2d20_X3bdd/calibrated_old/combined/'
 
 #CO
+COfiles = []
 i=0
 for file in MeasSetsCO:
-	sdbaseline(infile=file, datacolumn='data',  spw = spwCO, blfunc = 'poly', order = 2, overwrite = True,outfile = pathCal+'baselines/'+names[i]+'_CO.bl',clipniter = 100, maskmode = 'auto',  thresh= 6 ,avg_limit = 0 ,minwidth= 5 ,edge=0)
+	outfile = pathnew + names[i]+'_newCO.ms.split.cal'
+	mstransform(vis = file, outputvis = outfile, spw = '17,19', intent = 'OBSERVE_TARGET#ON_SOURCE',datacolumn = 'data',combinespws = True)
+	COfiles.append(outfile)
 	i=i+1
-	
 	
 #CI
+CIfiles = []
 i=0
 for file in MeasSetsCI:
-	sdbaseline(infile=file, datacolumn='data',  spw = spwCI, blfunc = 'poly', order = 1, overwrite = True,outfile = pathCal+'baselines/'+names[i]+'_CI.bl',clipniter = 100, maskmode = 'auto',  thresh= 5 ,avg_limit = 0 ,minwidth= 4 ,edge=0)
-	i=i+1
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
+	outfile = pathnew + names[i]+'_newCI.ms.split.cal'
+	mstransform(vis = file, outputvis = outfile, spw = '21,23', intent = 'OBSERVE_TARGET#ON_SOURCE',datacolumn = 'data',combinespws = True)
+	CIfiles.append(outfile)
+	i=i+1	
 	
 	
 
+	
+	
+	
